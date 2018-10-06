@@ -1,6 +1,8 @@
 #ifndef _YS_H_
 #define _YS_H_
 
+//#define BOOST_ASIO_ENABLE_HANDLER_TRACKING
+
 #include <iostream>
 #include <string>
 #include <array>

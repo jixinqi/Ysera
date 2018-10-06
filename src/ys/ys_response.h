@@ -39,6 +39,8 @@ namespace ys
 
 		void build();
 
+		void build_404();
+
 		void append_buffer(send_buffer &_send_buffer, std::size_t &length);
 
 	private:

@@ -203,8 +203,6 @@ bool ys::request_ext::do_parser_first_line()
 
 	_request_p->first_line_end(pos + split_str_len);
 
-	std::cout << _request_p->request_uri() << std::endl;
-
 	return true;
 }
 

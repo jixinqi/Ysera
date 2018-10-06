@@ -24,7 +24,7 @@ void ys::session::start()
 void ys::session::do_read()
 {
 	auto self(shared_from_this());
-	socket.async_read_some(
+	socket.async_receive(
 		boost::asio::buffer(_recv_buffer),
 		[this, self](boost::system::error_code ec, std::size_t length)
 		{
@@ -87,10 +87,13 @@ void ys::session::do_handle()
 
 	if (!handle_fun_find)
 	{
-		return;
+		_response_ext.build_404();
+	}
+	else
+	{
+		handle_fun(*(_request_ext.request_item()), *(_response_ext.response_item()));
 	}
 
-	handle_fun(*(_request_ext.request_item()), *(_response_ext.response_item()));
 	_response_ext.build();
 
 	do_write();

@@ -95,6 +95,12 @@ void ys::response_ext::build()
 	_response_p->full_msg(result);
 }
 
+void ys::response_ext::build_404()
+{
+	_response_p->status_code(404);
+	_response_p->phrase("Not Found");
+}
+
 void ys::response_ext::append_buffer(send_buffer & _send_buffer, std::size_t & length)
 {
 	_response_p->append_buffer(_send_buffer, length);
