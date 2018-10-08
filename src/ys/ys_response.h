@@ -20,6 +20,12 @@ namespace ys
 		const std::string& phrase() const;
 		void phrase(const std::string& val);
 
+		const std::string& connection() const;
+		void connection(const std::string& val);
+
+		const std::map<std::string, std::string> header() const;
+		void insert_header(const std::pair<std::string, std::string>& pair);
+
 		void append_buffer(send_buffer &_send_buffer, std::size_t &length);
 
 	protected:
@@ -28,6 +34,10 @@ namespace ys
 		std::string   _msg;
 		std::uint16_t _status_code;
 		std::string   _phrase;
+
+		std::string   _connection;
+
+		std::map<std::string, std::string> _header;
 	};
 
 	class response_ext

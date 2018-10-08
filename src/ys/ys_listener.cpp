@@ -24,10 +24,12 @@ void ys::listener::do_accept()
 	(
 		[this, self](boost::system::error_code ec, boost::asio::ip::tcp::socket socket)
 		{
-			if (!ec)
+			if (ec)
 			{
-				std::make_shared<session>(io_context_p,std::move(socket), _router_map_p)->start();
+				return;
 			}
+
+			std::make_shared<session>(io_context_p, std::move(socket), _router_map_p)->start();
 
 			do_accept();
 		}

@@ -12,6 +12,7 @@ namespace ys
 			boost::asio::ip::tcp::socket socket,
 			std::shared_ptr<std::map<std::string, ys::router>> router_map_p
 		);
+
 		void start();
 	private:
 		std::shared_ptr<boost::asio::io_context> io_context_p;

@@ -70,7 +70,7 @@ const std::string & ys::request::msg() const
 	return _msg;
 }
 
-const std::map<std::string, std::string> ys::request::header() const
+const std::map<std::string, std::string>& ys::request::header() const
 {
 	return _header;
 }
@@ -112,7 +112,12 @@ void ys::request::append_msg(const char c)
 
 void ys::request::insert_header(const std::pair<std::string, std::string>& pair)
 {
-	_header.insert(pair);
+	if (_header.find(pair.first) == _header.end())
+	{
+		_header.insert(pair);
+		return;
+	}
+	_header.at(pair.first) = pair.second;
 }
 
 ys::request_ext::request_ext(std::shared_ptr<request> _request_p)

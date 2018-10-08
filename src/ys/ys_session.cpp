@@ -16,6 +16,7 @@ ys::session::session
 
 void ys::session::start()
 {
+	auto self(shared_from_this());
 	_request_ext.request_item()->init();
 	_response_ext.response_item()->init();
 	do_read();
@@ -61,18 +62,17 @@ void ys::session::do_handle()
 {
 	auto self(shared_from_this());
 
-	std::string hostname = "_";
-
-	ys::router *hit_router = nullptr;
-
 	const std::map<std::string, std::string>& header_ref = _request_ext.request_item()->header();
-	const auto route_host_iter = header_ref.find("Host");
-	const auto route_end_iter  = header_ref.end();
-	if (route_host_iter != route_end_iter)
+	const auto header_ref_end = header_ref.end();
+
+	// Get hostname
+	std::string hostname = "_";
+	ys::router *hit_router = nullptr;
+	const auto header_ref_host_iter = header_ref.find("Host");
+	if (header_ref_host_iter != header_ref_end)
 	{
 		hostname = header_ref.at("Host");
 	}
-
 	if ((_router_map_p->find(hostname) == _router_map_p->end()) && (_router_map_p->find("_") != _router_map_p->end()))
 	{
 		hit_router = &(_router_map_p->at("_"));
@@ -82,9 +82,9 @@ void ys::session::do_handle()
 		return;
 	}
 
+	// Get Handle
 	std::function<void(request &req, response &res)> handle_fun;
 	bool handle_fun_find = hit_router->get_handle(_request_ext.request_item()->request_uri(), handle_fun);
-
 	if (!handle_fun_find)
 	{
 		_response_ext.build_404();
@@ -92,6 +92,14 @@ void ys::session::do_handle()
 	else
 	{
 		handle_fun(*(_request_ext.request_item()), *(_response_ext.response_item()));
+	}
+
+	// Set Connection
+	std::string connection;
+	const auto header_ref_connection_iter = header_ref.find("Connection");
+	if (header_ref_connection_iter != header_ref_end)
+	{
+		_response_ext.response_item()->connection(header_ref_connection_iter->second);
 	}
 
 	_response_ext.build();
@@ -120,7 +128,7 @@ void ys::session::do_write()
 			{
 				do_write();
 			}
-			else
+			else if(_response_ext.response_item()->connection() == "keep-alive")
 			{
 				start();
 			}

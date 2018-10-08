@@ -29,7 +29,7 @@ namespace ys
 		const std::string& msg() const;
 		void append_msg(const char c);
 
-		const std::map<std::string, std::string> header() const;
+		const std::map<std::string, std::string>& header() const;
 		void insert_header(const std::pair<std::string, std::string>& pair);
 
 	protected:

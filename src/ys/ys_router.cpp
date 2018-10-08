@@ -2,7 +2,7 @@
 
 void ys::router_rule::hello(request & req, response & res)
 {
-	std::string msg = "Hello, with that spelling, was used in publications in the US as early as the 18 October 1826 edition of the Norwich Courier of Norwich, Connecticut.[1] Another early use was an 1833 American book called The Sketches and Eccentricities of Col. David Crockett, of West Tennessee,[2] which was reprinted that same year in The London Literary Gazette.[3] The word was extensively used in literature by the 1860s.[4]";
+	std::string msg = "Hello, world!\n";
 	res.msg(msg);
 }
 

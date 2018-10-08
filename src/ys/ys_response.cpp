@@ -5,8 +5,10 @@ void ys::response::init()
 {
 	_full_msg.clear();
 	_msg.clear();
+
 	_status_code = 200;
 	_phrase = "OK";
+	_connection = "close";
 }
 
 const std::string & ys::response::msg() const
@@ -49,6 +51,29 @@ void ys::response::phrase(const std::string & val)
 	_phrase = val;
 }
 
+const std::string & ys::response::connection() const
+{
+	return _connection;
+}
+
+void ys::response::connection(const std::string & val)
+{
+	if (val == "keep-alive")
+	{
+		_connection = val;
+	}
+}
+
+const std::map<std::string, std::string> ys::response::header() const
+{
+	return _header;
+}
+
+void ys::response::insert_header(const std::pair<std::string, std::string>& pair)
+{
+	_header.insert(pair);
+}
+
 void ys::response::append_buffer(send_buffer & _send_buffer, std::size_t & length)
 {
 	length = 0;
@@ -86,7 +111,8 @@ void ys::response_ext::build()
 		  .append(" ")
 		  .append(_response_p->phrase())
 		  .append("\r\n");
-	result.append("Connection: close\r\n");
+
+	result.append("Connection: ").append(_response_p->connection()).append("\r\n");
 	result.append("Server: ys/0.1\r\n");
 	result.append("Content-Type: text/plain\r\n");
 	result.append("Content-Length: ").append(std::to_string(_response_p->msg().length())).append("\r\n");
