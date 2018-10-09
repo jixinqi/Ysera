@@ -114,10 +114,20 @@ void ys::response_ext::build()
 
 	result.append("Connection: ").append(_response_p->connection()).append("\r\n");
 	result.append("Server: ys/0.1\r\n");
-	result.append("Content-Type: text/plain\r\n");
-	result.append("Content-Length: ").append(std::to_string(_response_p->msg().length())).append("\r\n");
+
+	if (_response_p->msg().length())
+	{
+		result.append("Content-Type: text/plain\r\n");
+		result.append("Content-Length: ").append(std::to_string(_response_p->msg().length())).append("\r\n");
+	}
+
 	result.append("\r\n");
-	result.append(_response_p->msg());
+
+	if (_response_p->msg().length())
+	{
+		result.append(_response_p->msg());
+	}
+
 	_response_p->full_msg(result);
 }
 

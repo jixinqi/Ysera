@@ -29,13 +29,13 @@ namespace ys
 		void append_buffer(send_buffer &_send_buffer, std::size_t &length);
 
 	protected:
-		std::string   _full_msg;
-
 		std::string   _msg;
 		std::uint16_t _status_code;
 		std::string   _phrase;
 
 		std::string   _connection;
+
+		std::string   _full_msg;
 
 		std::map<std::string, std::string> _header;
 	};
@@ -48,7 +48,6 @@ namespace ys
 		const std::shared_ptr<response> response_item() const;
 
 		void build();
-
 		void build_404();
 
 		void append_buffer(send_buffer &_send_buffer, std::size_t &length);
